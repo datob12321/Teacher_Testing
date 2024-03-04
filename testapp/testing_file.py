@@ -1,3 +1,6 @@
+import json
+
+
 class Question:
     def __init__(self, question_text, answers: dict, correct_answer):
         self.question_text = question_text
@@ -44,5 +47,3 @@ user_points = 0
 #
 # if user_points >= 7:
 #     print('You have passed the test!')
-
-

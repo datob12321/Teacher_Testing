@@ -22,7 +22,7 @@
         </div>
         
        {% endfor %}
-    <button class="submit_button"><a href="{% url 'index' %}">submit answers</a></button>
+    <button class="submit_button"><a>submit answers</a></button>
     </form>
 
 
@@ -74,7 +74,7 @@
             console.log(correct_answers[i])
             var xttp = new XMLHttpRequest()
             xttp.open("POST", '{% url 'test_page' %}', true)
-            xttp.send(JSON.stringify({answers_dict: correct_answers}))
+            xttp.send(JSON.stringify({"answers_dict": correct_answers}))
             xttp.onload=function(){
                 if (xttp.status>=200 && xttp.status<300){
                     console.log('success')
