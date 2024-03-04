@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <form method="POST">
+    {% csrf_token %}
+        {% for question in questions %}
+        <h1>{{ forloop.counter }}.{{ question.question_text }}</h1>
+        <div class="questions">
+             <label>{{ question.answers.a }}</label>
+            <input type="radio" name="{{ forloop.counter0 }}" value="a" class="class{{ forloop.counter0 }}">
+            <label>{{ question.answers.b }}</label>
+            <input type="radio" name="{{ forloop.counter0 }}" value="b" class="class{{ forloop.counter0 }}">
+            <label>{{ question.answers.c }}</label>
+            <input type="radio" name="{{ forloop.counter0 }}" value="c" class="class{{ forloop.counter0 }}">
+            <label>{{ question.answers.d }}</label>
+            <input type="radio" name="{{ forloop.counter0 }}" value="d" class="class{{ forloop.counter0 }}">
+        </div>
+        
+       {% endfor %}
+    <button class="submit_button"><a href="{% url 'index' %}">submit answers</a></button>
+    </form>
+
+
+
+</body>
+<style>
+    
+    body{
+        font-family: "Berlin Sans FB Demi";
+        background-color: #6e4b3b;
+    }
+    
+    h1{
+        color: #050541
+    }
+    .questions{
+        display: flex;
+        justify-content: flex-start;
+        gap: 40px;
+        font-size: 20px;
+        color: #340e04;
+        font-weight: bold;
+    }
+</style>
+
+<script>
+
+
+    var submit_button = document.querySelector(".submit_button")
+    var questions = document.querySelectorAll('.questions')
+    var dict_answers = {{ dict_answers | safe }}
+    var correct_answers = []
+    for (var i=0; i<dict_answers.length; i++){
+
+        var answers = document.querySelectorAll(`.class${i}`)
+        for (var j=0; j<answers.length; j++){
+            (function(index){
+                answers[j].addEventListener('click', function (){
+                {#console.log(this.value==dict_answers[index].answer)#}
+                    correct_answers[index] = this.value==dict_answers[index].answer
+            })
+            })(i)
+
+        }
+    }
+
+    submit_button.addEventListener('click', function (){
+        for (var i=0; i<correct_answers.length; i++){
+            console.log(correct_answers[i])
+            var xttp = new XMLHttpRequest()
+            xttp.open("POST", '{% url 'test_page' %}', true)
+            xttp.send(JSON.stringify({answers_dict: correct_answers}))
+            xttp.onload=function(){
+                if (xttp.status>=200 && xttp.status<300){
+                    console.log('success')
+                }
+            }
+        }
+
+    })
+    
+    
+   
+
+</script>
+</html>

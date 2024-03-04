@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    {% for message in messages %}
+        <h2>{{ message }}</h2>
+    {% endfor %}
+    
+    {% if user.is_authenticated %}
+     <h1>{{ user.username }}</h1>
+        <h1>Teacher Status: {{ user.status.teacher_status }}</h1>
+        {% if not user.status.teacher_status %}
+             <a href="{% url 'test_page' %}">take a test for teacher status</a>
+        {% endif %}
+
+        {% else %}
+        <h1>No active user</h1>
+    {% endif %}
+    
+    <script>
+    console.log({{ user.teacher_status }})
+    </script>
+    
+{% endblock %}
